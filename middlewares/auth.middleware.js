@@ -2,7 +2,13 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 function authMiddleware(request, response, next) {
-  const token = req.headers.authorization
+  const authHeader = request.headers.authorization
+
+  if (!authHeader) {
+    return response.sendStatus(401)
+  }
+
+  const token = authHeader.split(' ')[1]
 
   if (!token) {
     return response.sendStatus(401)
